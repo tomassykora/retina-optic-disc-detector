@@ -4,6 +4,8 @@
 
 Author: Tomáš Sýkora
 
+A new approach to optic disc detection in a retina image.
+
 
 # detector
 
@@ -13,17 +15,22 @@ Example output:
 
 ![](readme_images/example.png)
 
-# preprocess and train
+# preprocess
 
-To train the model, images from the STARE database were used. Preprocessing steps to obtain better visibility of the optic disc and the vein network:
+Preprocessing steps to obtain better visibility of the optic disc and the vein network:
 
 ![](readme_images/preprocess_pipeline.png)
 _0) Input image, 1) adaptive histogram equalization, 2) illumination correction, 3) adaptive histogram equalization_
 
+# and train
 
-The images divided into patches (45x42) are sent to the CNN. The network consists of fully convolutional layers, output is distance of the patch to the optic disc (x, y directions):
+To train the model, images from the STARE database were used. The images divided into patches (45x42) are sent to the CNN. The network consists of fully convolutional layers, output is distance of the patch to the optic disc (x, y directions):
 
 ![](readme_images/cnn_layers.png)
+
+After training on all patches, a 'fine tuning' step comes next. That means that the dataset in the last epoch of training consisted from a set half of which were random patches like the ones in the previous epochs, while the other half consisted of patches with a zero distance to the optic disc. This helped the network to better converge to zero and when the OD was found, the following predictions stayed close to zero (which was a problem without this fine tuning step).
+
+In the future, lots of improvements can be done here, especially in the way the network is trained (on which datasets, how the patches looks like, what's the ratio of clean optic disc patches to the random ones etc.).
  
 
 # usage
