@@ -594,6 +594,7 @@ class optic_disc_detector:
 			patch_width = 42
 			patch_height = 45
 
+			images_cnt = len(train_images)
 			for img in train_images:
 				
 				start_idx = 60
@@ -645,7 +646,7 @@ class optic_disc_detector:
 				if d < 20:
 					radius_20 += 1
 
-			total = total / 25
+			total = total / images_cnt
 			print('Avg. distance from gt: ', total)
 			print('Detections with distance under 10: ', radius_10)
 			print('Detections with distance under 20: ', radius_20)
